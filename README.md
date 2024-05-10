@@ -12,11 +12,28 @@ Each guess is graded by the keeper with a single digit – the number of correct
 pins in their correct positions. The game stops when the grade of the most recent guess is
 n.
 
-## TODO
+## Implementation
 
-1. Estimate the complexity of the move search in different stages of the game.
-2. Suggest a system of qubits that describes the game, and define the game states and state
-vectors.
-3. Design quantum gates that implement the operations of the sequential classical algorithm.
-4. Apply the designed gates to superposition states aiming at parallelization of the move
-search.
+The game is described with 20 qubits:
+- 1-8 guess qubits
+- 9-16 secret qubits
+- 17-20 feedback qubits
+
+1. Secret is passed as an array of 8 bits, each 2 bits are 1 color. E.g.
+```
+[0, 0, 1, 1, 0, 1, 1, 0] -> 4 colors: 00, 11, 01, 10
+```
+
+2. Secret qubits are prepared using X gates
+3. Guess qubits are put to superposition using Hadamard gates
+4. Secret and guess qubits are compared using Toffoli (CCNOT) gates and the results are stored in feedback qubits
+5. Finally, feedback qubits are measured to get the result
+
+In this project 1000 shots were used, and as a result it shows a list of all measured states:
+```
+{'1011': 11, '1110': 16, '1111': 3, '1101': 15, '0111': 15, '1010': 24, '0001': 93, '0011': 48, '1001': 31, '1000': 107, '0100': 112, '1100': 23, '0101': 34, '0110': 40, '0010': 106, '0000': 322}
+
+```
+
+This means that '1011' state appeared 11 times out of 1000.
+From the above example we extract that correct solution ('1111') appeared 3 times.
