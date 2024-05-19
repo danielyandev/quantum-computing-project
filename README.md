@@ -37,3 +37,18 @@ In this project 1000 shots were used, and as a result it shows a list of all mea
 
 This means that '1011' state appeared 11 times out of 1000.
 From the above example we extract that correct solution ('1111') appeared 3 times.
+
+## P.S.
+
+In this implementation secret qubits are compared to guess
+qubits in superposition and only feedback qubits are measured.
+I misunderstood the task and the solution assumed to be iteratively guessing.
+So guess qubits should be measured each time to provide a guess.
+For this approach we need:
+
+1. Prepare guess qubits
+2. Using Hadamard gate put them to superposition
+3. Make first guess and a feedback from keeper to get the score as a matching count.
+4. Perform XOR on all positions.
+5. To maximize the probability of measuring a result that is far from the initial guess we need to increase aplitudes using qubit flipping.
+6. Finally, we need to measure the result and repeat everything to find a solution.
